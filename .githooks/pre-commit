@@ -1,0 +1,44 @@
+#!/bin/sh
+
+# 1. Проверяем, запущен ли Docker контейнер 'app'
+if ! docker compose ps --filter "status=running" --services | grep -q '^app$'; then
+    echo "=========================================================="
+    echo "ERROR: Docker container 'app' is not running!"
+    echo "Please start the containers using 'make up' before committing."
+    echo "If you want to skip checks, use: git commit --no-verify"
+    echo "=========================================================="
+    exit 1
+fi
+
+# 2. Запуск форматирования кода
+echo "Running PHP Code Fixer (make cs-fix)..."
+make cs-fix
+
+# Проверяем, изменились ли какие-то файлы после форматирования
+CHANGED_PHP_FILES=$(git diff --name-only | grep '\.php$')
+
+if [ -n "$CHANGED_PHP_FILES" ]; then
+    echo "=========================================================="
+    echo "WARNING: The code style fixer formatted some PHP files:"
+    echo "$CHANGED_PHP_FILES"
+    echo "Please review the changes, stage them (git add), and try committing again."
+    echo "=========================================================="
+    exit 1
+fi
+
+# 3. Запуск тестов
+echo "Running Tests (make test)..."
+make test
+TEST_RESULT=$?
+
+if [ $TEST_RESULT -ne 0 ]; then
+    echo "=========================================================="
+    echo "ERROR: Tests failed! Commit aborted."
+    echo "=========================================================="
+    exit 1
+fi
+
+echo "=========================================================="
+echo "All checks passed! Committing..."
+echo "=========================================================="
+exit 0

@@ -1,4 +1,4 @@
-.PHONY: help init up down rebuild migrate fixture prepare-test-db test test-unit test-acceptance sms-test shell ps logs cs-fix phpstan
+.PHONY: help init up down rebuild migrate fixture prepare-test-db test test-unit test-acceptance sms-test shell ps logs cs-fix phpstan install-git-hooks
 
 DC := docker compose
 
@@ -19,7 +19,8 @@ help:
 		"  make ps               - show containers status" \
 		"  make logs             - tail app and db logs" \
 		"  make cs-fix           - run php-cs-fixer" \
-		"  make phpstan          - run phpstan static analysis"
+		"  make phpstan          - run phpstan static analysis" \
+		"  make install-git-hooks - configure Git to use tracked hooks from .githooks"
 
 init:
 	@if [ ! -f .env ]; then cp .env.example .env; fi
@@ -72,3 +73,6 @@ cs-fix:
 
 phpstan:
 	$(DC) exec app vendor/bin/phpstan analyze --ansi --memory-limit=1G
+
+install-git-hooks:
+	git config core.hooksPath .githooks
