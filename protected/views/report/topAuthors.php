@@ -18,7 +18,7 @@
                 </th>
             </tr>
             <tr>
-                <th>#</th>
+                <th style="width: 5%; text-align: center;">#</th>
                 <th>Author</th>
                 <th>Books Count</th>
             </tr>
@@ -26,7 +26,7 @@
         <tbody>
             <?php foreach ($rows as $index => $row): ?>
                 <tr>
-                    <td><?php echo $index + 1; ?></td>
+                    <td style="text-align: center; color: #888;"><?php echo $index + 1; ?></td>
                     <td><?php echo CHtml::encode($row['author_name']); ?></td>
                     <td><?php echo CHtml::encode((string) $row['books_count']); ?></td>
                 </tr>
