@@ -43,13 +43,13 @@
 
     <div class="pager-container" style="margin-top: 20px; text-align: center;">
         <?php $this->widget('CLinkPager', [
-                'pages' => $pages,
-                'header' => '',
-                'nextPageLabel' => 'Next &raquo;',
-                'prevPageLabel' => '&laquo; Prev',
-                'firstPageLabel' => '&laquo;&laquo; First',
-                'lastPageLabel' => 'Last &raquo;&raquo;',
-                'htmlOptions' => ['class' => 'yiiPager'],
-            ]); ?>
+            'pages' => $pages,
+            'header' => '',
+            'nextPageLabel' => 'Next &raquo;',
+            'prevPageLabel' => '&laquo; Prev',
+            'firstPageLabel' => '&laquo;&laquo; First',
+            'lastPageLabel' => 'Last &raquo;&raquo;',
+            'htmlOptions' => ['class' => 'yiiPager'],
+        ]); ?>
     </div>
 </div>
