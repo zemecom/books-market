@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Set up Environment File
+        run: cp .env.example .env
+
+      - name: Fix Permissions
+        run: chmod -R 777 protected/runtime public/assets public/uploads runtime
+
+      - name: Build and Start Containers
+        run: docker compose up -d --build
+
+      - name: Install Composer Dependencies
+        run: docker compose exec -T app composer install --no-interaction --prefer-dist --optimize-autoloader
+
+      - name: Run Database Migrations
+        run: docker compose exec -T app php protected/yiic.php migrate --interactive=0
+
+      - name: Run Code Style Check (PHP-CS-Fixer)
+        run: docker compose exec -T app vendor/bin/php-cs-fixer fix --dry-run --diff --ansi
+
+      - name: Run Static Analysis (PHPStan)
+        run: docker compose exec -T app vendor/bin/phpstan analyze --ansi --memory-limit=1G
+
+      - name: Prepare Test Database
+        run: docker compose exec -T app php tests/bin/prepare_test_db.php
+
+      - name: Run Tests (Codeception)
+        run: docker compose exec -T app vendor/bin/codecept run --ansi

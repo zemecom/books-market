@@ -1,0 +1,13 @@
+parameters:
+    level: 1
+    bootstrapFiles:
+        - phpstan-bootstrap.php
+    paths:
+        - protected
+        - tests
+    excludePaths:
+        - protected/views/*
+        - protected/runtime/*
+        - protected/migrations/*
+        - tests/_output/*
+        - tests/_support/_generated/*

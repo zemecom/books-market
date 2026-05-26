@@ -1,0 +1,17 @@
+actor: AcceptanceTester
+modules:
+  enabled:
+    - PhpBrowser:
+        url: http://app
+        headers:
+          X-App-Env: test
+    - Db:
+        dsn: 'mysql:host=db;dbname=books_catalog_test'
+        user: 'app'
+        password: 'app'
+        cleanup: true
+        populate: true
+        dump: tests/_data/test_dump.sql
+        reconnect: true
+    - Asserts
+    - \Tests\Support\Helper\Acceptance

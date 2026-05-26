@@ -1,0 +1,42 @@
+{
+    "name": "books-market/app",
+    "description": "Books Market Yii1 application with CQRS-lite service architecture",
+    "type": "project",
+    "require": {
+        "php": "^8.4",
+        "yiisoft/yii": "^1.1.31"
+    },
+    "require-dev": {
+        "codeception/codeception": "^5.3",
+        "codeception/module-asserts": "^3.3",
+        "codeception/module-db": "^3.2",
+        "codeception/module-phpbrowser": "^4.0",
+        "friendsofphp/php-cs-fixer": "^3.95",
+        "phpstan/phpstan": "^2.0",
+        "phpunit/phpunit": "^12.2"
+    },
+    "autoload": {
+        "classmap": [
+            "protected/components",
+            "protected/controllers",
+            "protected/domain",
+            "protected/forms",
+            "protected/models",
+            "protected/repositories",
+            "protected/services"
+        ]
+    },
+    "autoload-dev": {
+        "classmap": [
+            "tests/_support"
+        ]
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "codeception/codeception": true
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
