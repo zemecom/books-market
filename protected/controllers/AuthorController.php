@@ -24,10 +24,7 @@ class AuthorController extends Controller
         $queryService = Yii::app()->services->authorViewQueryService();
         $totalItems = $queryService->countAuthors();
 
-        $perPage = isset($_GET['perPage']) ? (int) $_GET['perPage'] : 5;
-        if (!in_array($perPage, [5, 10, 25, 50], true)) {
-            $perPage = 5;
-        }
+        $perPage = $this->resolvePerPage('author_catalog_per_page');
 
         $pages = new CPagination($totalItems);
         $pages->pageSize = $perPage;
