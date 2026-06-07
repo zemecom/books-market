@@ -1,6 +1,7 @@
 <?php
 
 $env = require __DIR__ . '/env.php';
+$isSecureCookie = parse_url($env['appUrl'], PHP_URL_SCHEME) === 'https';
 
 return [
     'basePath' => dirname(__DIR__),
@@ -28,6 +29,20 @@ return [
             'class' => 'CHttpRequest',
             'enableCsrfValidation' => true,
             'enableCookieValidation' => true,
+            'csrfCookie' => [
+                'httpOnly' => true,
+                'secure' => $isSecureCookie,
+                'sameSite' => CHttpCookie::SAME_SITE_STRICT,
+            ],
+        ],
+        'session' => [
+            'class' => 'CHttpSession',
+            'cookieMode' => 'only',
+            'cookieParams' => [
+                'httponly' => true,
+                'secure' => $isSecureCookie,
+                'samesite' => CHttpCookie::SAME_SITE_LAX,
+            ],
         ],
         'user' => [
             'allowAutoLogin' => false,
