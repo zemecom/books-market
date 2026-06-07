@@ -9,14 +9,28 @@ class LocalCoverImageStorage implements CoverImageStorageInterface
     public function store(CUploadedFile $file): string
     {
         if (!is_dir($this->baseDirectory)) {
-            mkdir($this->baseDirectory, 0777, true);
+            if (!mkdir($this->baseDirectory, 0755, true) && !is_dir($this->baseDirectory)) {
+                throw new RuntimeException('Unable to create upload directory.');
+            }
         }
 
         $safeBaseName = preg_replace('/[^a-zA-Z0-9_-]+/', '-', pathinfo($file->name, PATHINFO_FILENAME));
-        $fileName = sprintf('%s-%s.%s', $safeBaseName ?: 'cover', uniqid(), $file->extensionName);
+        $fileName = sprintf('%s-%s.%s', $safeBaseName ?: 'cover', bin2hex(random_bytes(16)), $file->extensionName);
         $absolutePath = rtrim($this->baseDirectory, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $fileName;
-        $file->saveAs($absolutePath);
+        if (!$file->saveAs($absolutePath)) {
+            throw new RuntimeException('Unable to save uploaded cover image.');
+        }
 
         return 'uploads/' . $fileName;
+    }
+
+    public function delete(string $path): void
+    {
+        $fileName = basename($path);
+        $absolutePath = rtrim($this->baseDirectory, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $fileName;
+
+        if (is_file($absolutePath)) {
+            @unlink($absolutePath);
+        }
     }
 }

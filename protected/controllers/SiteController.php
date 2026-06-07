@@ -4,6 +4,20 @@ declare(strict_types=1);
 
 class SiteController extends Controller
 {
+    public function filters(): array
+    {
+        return ['accessControl', 'postOnly + logout'];
+    }
+
+    public function accessRules(): array
+    {
+        return [
+            ['allow', 'actions' => ['index', 'login', 'error'], 'users' => ['*']],
+            ['allow', 'actions' => ['logout'], 'users' => ['@']],
+            ['deny', 'users' => ['*']],
+        ];
+    }
+
     public function actions(): array
     {
         return [];

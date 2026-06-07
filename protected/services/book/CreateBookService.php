@@ -17,6 +17,7 @@ class CreateBookService
         $authorIds = array_values(array_map('intval', $form->authorIds));
         $this->policy->assertHasAuthors($authorIds);
         $this->authors->assertAuthorsExist($authorIds);
+        $coverPath = null;
 
         $transaction = $this->books->beginTransaction();
         try {
@@ -33,6 +34,9 @@ class CreateBookService
             $transaction->commit();
         } catch (Throwable $exception) {
             $transaction->rollback();
+            if ($coverPath !== null) {
+                $this->coverStorage->delete($coverPath);
+            }
             throw $exception;
         }
 

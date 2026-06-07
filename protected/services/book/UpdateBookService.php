@@ -19,8 +19,10 @@ class UpdateBookService
 
         $book = $this->books->findModelById($bookId);
         $coverPath = $book->cover_path;
+        $newCoverPath = null;
         if ($form->coverFile instanceof CUploadedFile) {
-            $coverPath = $this->coverStorage->store($form->coverFile);
+            $newCoverPath = $this->coverStorage->store($form->coverFile);
+            $coverPath = $newCoverPath;
         }
 
         $transaction = $this->books->beginTransaction();
@@ -37,6 +39,9 @@ class UpdateBookService
             $transaction->commit();
         } catch (Throwable $exception) {
             $transaction->rollback();
+            if ($newCoverPath !== null) {
+                $this->coverStorage->delete($newCoverPath);
+            }
             throw $exception;
         }
 

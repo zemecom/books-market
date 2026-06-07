@@ -24,6 +24,11 @@ return [
         'application.services.storage.*',
     ],
     'components' => [
+        'request' => [
+            'class' => 'CHttpRequest',
+            'enableCsrfValidation' => true,
+            'enableCookieValidation' => true,
+        ],
         'user' => [
             'allowAutoLogin' => false,
             'loginUrl' => ['site/login'],

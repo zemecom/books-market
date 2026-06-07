@@ -30,8 +30,15 @@ final class AdminHasSupersetAccessCest
         $I->click('Subscribe');
         $I->see('+7 (999) 000-00-00');
 
+        $I->click('Edit', 'table.table');
+        $I->see('Edit Subscription');
+        $I->fillField('UpdateSubscriptionForm[phone]', '+7 (999) 111-22-33');
+        $I->click('Save');
+        $I->see('Subscription updated successfully.');
+        $I->see('+7 (999) 111-22-33');
+
         $I->click('Delete', 'table.table');
         $I->see('Subscription deleted successfully.');
-        $I->dontSee('+7 (999) 000-00-00', 'table.table');
+        $I->dontSee('+7 (999) 111-22-33', 'table.table');
     }
 }

@@ -19,7 +19,7 @@
             <?php echo CHtml::endForm(); ?>
         </div>
 
-        <?php if (!empty($author['subscriptions'])): ?>
+        <?php if (Yii::app()->user->checkAccess('admin') && !empty($author['subscriptions'])): ?>
             <h3 class="mt-32">Subscribers</h3>
             <table class="table">
                 <thead>
@@ -34,11 +34,9 @@
                             <td><?php echo CHtml::encode($subscription['phone']); ?></td>
                             <td>
                                 <?php echo CHtml::link('Edit', ['updateSubscription', 'id' => $subscription['id']], ['class' => 'button button-sm']); ?>
-                                <?php if (Yii::app()->user->checkAccess('admin')): ?>
-                                    <?php echo CHtml::beginForm(['deleteSubscription', 'id' => $subscription['id']], 'post', ['class' => 'action-form', 'onsubmit' => "return confirm('Are you sure you want to delete this subscription?');"]); ?>
-                                    <button class="button button-danger button-sm" type="submit">Delete</button>
-                                    <?php echo CHtml::endForm(); ?>
-                                <?php endif; ?>
+                                <?php echo CHtml::beginForm(['deleteSubscription', 'id' => $subscription['id']], 'post', ['class' => 'action-form', 'onsubmit' => "return confirm('Are you sure you want to delete this subscription?');"]); ?>
+                                <button class="button button-danger button-sm" type="submit">Delete</button>
+                                <?php echo CHtml::endForm(); ?>
                             </td>
                         </tr>
                     <?php endforeach; ?>

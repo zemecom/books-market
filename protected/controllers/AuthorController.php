@@ -13,8 +13,8 @@ class AuthorController extends Controller
     {
         return [
             ['allow', 'actions' => ['index', 'view', 'subscribe'], 'users' => ['*']],
-            ['allow', 'actions' => ['create', 'update', 'delete', 'updateSubscription'], 'roles' => ['user']],
-            ['allow', 'actions' => ['deleteSubscription'], 'roles' => ['admin']],
+            ['allow', 'actions' => ['create', 'update', 'delete'], 'roles' => ['user']],
+            ['allow', 'actions' => ['updateSubscription', 'deleteSubscription'], 'roles' => ['admin']],
             ['deny', 'users' => ['*']],
         ];
     }

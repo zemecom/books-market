@@ -23,14 +23,8 @@ final class UserCanCreateAuthorAndBookCest
         $I->fillField('SubscribeAuthorForm[phone]', '+7 (999) 000-00-00');
         $I->click('Subscribe');
         $I->see('Subscription created successfully.');
-        $I->see('+7 (999) 000-00-00');
-
-        $I->click('Edit', 'table.table');
-        $I->see('Edit Subscription');
-        $I->fillField('UpdateSubscriptionForm[phone]', '+7 (999) 111-22-33');
-        $I->click('Save');
-        $I->see('Subscription updated successfully.');
-        $I->see('+7 (999) 111-22-33');
+        $I->dontSee('+7 (999) 000-00-00');
+        $I->dontSee('Subscribers');
 
         $I->amOnPage('/book/create');
         $I->fillField('BookForm[title]', 'Implementing DDD');

@@ -167,6 +167,8 @@ final class NullCoverImageStorage implements CoverImageStorageInterface
     {
         return '';
     }
+
+    public function delete(string $path): void {}
 }
 
 final class NullTransaction

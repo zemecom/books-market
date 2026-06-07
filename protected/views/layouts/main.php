@@ -19,7 +19,11 @@
         <?php if (Yii::app()->user->isGuest): ?>
             <?php echo CHtml::link('Login', ['/site/login']); ?>
         <?php else: ?>
-            <?php echo CHtml::link('Logout (' . CHtml::encode(Yii::app()->user->name ?: Yii::app()->user->getState('login')) . ')', ['/site/logout']); ?>
+            <?php echo CHtml::beginForm(['/site/logout'], 'post', ['class' => 'inline-form']); ?>
+                <button class="link-button" type="submit">
+                    <?php echo CHtml::encode('Logout (' . (Yii::app()->user->name ?: Yii::app()->user->getState('login')) . ')'); ?>
+                </button>
+            <?php echo CHtml::endForm(); ?>
         <?php endif; ?>
     </nav>
 </header>
