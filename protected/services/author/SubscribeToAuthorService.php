@@ -22,7 +22,16 @@ class SubscribeToAuthorService
             return new SubscriptionResult(false, 'This phone is already subscribed to the author.', (int) $existing->id);
         }
 
-        $subscription = $this->subscriptions->create($authorId, $form->phone, $phone);
+        try {
+            $subscription = $this->subscriptions->create($authorId, $form->phone, $phone);
+        } catch (CDbException $exception) {
+            $existing = $this->subscriptions->findExisting($authorId, $phone);
+            if ($existing !== null) {
+                return new SubscriptionResult(false, 'This phone is already subscribed to the author.', (int) $existing->id);
+            }
+
+            throw $exception;
+        }
 
         return new SubscriptionResult(true, 'Subscription created successfully.', (int) $subscription->id);
     }
